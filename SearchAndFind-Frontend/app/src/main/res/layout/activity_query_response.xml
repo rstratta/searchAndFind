@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="uy.com.searchandfind.query.activity.QueryResponseActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/QueryResultTheme.AppBarOverlay"
+        android:title="@string/query_response_title">
+
+    </android.support.design.widget.AppBarLayout>
+    <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/tabhost" android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:clickable="true">
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="fill_parent" android:layout_height="fill_parent"
+            android:clickable="true">
+            <TabWidget android:id="@android:id/tabs"
+                android:layout_width="fill_parent" android:layout_height="wrap_content"
+                android:clickable="true"/>
+            <FrameLayout android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent" android:layout_height="fill_parent"
+                android:clickable="true">
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/query_map_layout" android:orientation="vertical"
+                    android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:clickable="true">
+                    <fragment
+                        android:id="@+id/queryResultMap"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:layout_editor_absoluteX="8dp"
+                        tools:layout_editor_absoluteY="0dp" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical"
+                    android:layout_width="fill_parent" android:layout_height="fill_parent"
+                    android:id="@+id/queryResultLayout">
+                    <ListView android:id="@+id/query_result_list" android:layout_width="fill_parent"
+                        android:layout_height="0dip" android:layout_weight="1" />
+                </LinearLayout>
+
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+
+    </android.support.constraint.ConstraintLayout>

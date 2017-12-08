@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/confAccount"
+        android:icon="@drawable/syflogo"
+        android:title="Configurar cuenta"/>
+    <item android:id="@+id/confCategories"
+        android:icon="@drawable/syflogo"
+        android:title="Seleccionar categorías" />
+    <item android:id="@+id/history"
+        android:icon="@drawable/syflogo"
+        android:title="Mis ventas" />
+    <item android:id="@+id/saler_logout"
+        android:icon="@drawable/syflogo"
+        android:title="Cerrar sesión" />
+</menu>

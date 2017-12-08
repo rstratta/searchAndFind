@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:padding="6dip">
+
+        <ImageView
+            android:id="@+id/tenderImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="6dip"
+            android:contentDescription="Pantalón"
+            android:src="@drawable/syflogo" />
+
+
+        <TextView
+            android:id="@+id/tenderDescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tenderDescription"
+            android:layout_alignParentTop="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_toRightOf="@id/tenderImage"
+            android:gravity="center_vertical"
+            android:text="Description"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tenderAmmount"
+            android:layout_width="50dip"
+            android:layout_height="26dip"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_toRightOf="@id/tenderImage"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Ammount"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_gravity="bottom"
+            android:src="@drawable/star"
+            android:layout_alignTop="@+id/tenderAmmount"
+            android:layout_toRightOf="@+id/tenderAmmount"
+            android:layout_toEndOf="@+id/tenderAmmount" />
+
+        <TextView
+            android:id="@+id/pending"
+            android:layout_width="match_parent"
+            android:layout_height="25dip"
+            android:layout_alignTop="@+id/tenderAmmount"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_gravity="center"
+            android:layout_toRightOf="@+id/tenderAmmount"
+            android:gravity="center"
+            android:text="Pendiente de calificar"
+            android:textSize="12sp"
+            android:textColor="#901212"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:id="@+id/myRate"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignTop="@+id/tenderAmmount"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_gravity="center"
+            android:layout_toEndOf="@+id/tenderAmmount"
+            android:layout_toRightOf="@+id/tenderAmmount"
+            android:gravity="center"
+            android:src="@drawable/star"
+            android:text="3"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+        <!--<TextView
+        android:id="@+id/tenderAmmount"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tenderAmmount"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/tenderDescription"
+        android:gravity="center_vertical"
+        android:text="Ammount"
+        android:textSize="16sp" />
+        -->
+    </RelativeLayout>
+</LinearLayout>

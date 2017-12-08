@@ -1,0 +1,224 @@
+<resources>
+    <string name="app_name">S&amp;F Encontrá lo que buscás</string>
+
+    <!-- ui messages -->
+    <string name="action_sign_in">Ingresar</string>
+    <string name="btn_tender_saler">Ir a Tender</string>
+    <string name="google_action_sign_in">Ingresar con Google</string>
+    <string name="action_sign_up">Registrar</string>
+    <string name="error_invalid_email">Dirección de correo inválida</string>
+    <string name="error_invalid_password">Password demasiado corto</string>
+    <string name="error_incorrect_password">Password incorrecto</string>
+    <string name="error_different_password">Password no coincide con el anterior</string>
+    <string name="error_field_required">El campo es requerido</string>
+    <string name="amount_is_required">EL campo monto es requerido</string>
+    <string name="amount_is_a_number">El campo monto debe ser númerico</string>
+    <string name="error_loading_image">Ocurrió un error al cargar imágen</string>
+    <string name="permission_rationale">Verifique sus permisos</string>
+    <string name="title_activity_client">ClientActivity</string>
+    <string name="lblMail">E-mail</string>
+    <string name="lblPassword">Contraseña</string>
+    <string name="lblpassRep">Repetir Contraseña</string>
+    <string name="lblLocal">Nombre del Local</string>
+    <string name="btnRegister">Registrar</string>
+    <string name="lnkNewAccount">Crear nueva cuenta</string>
+    <string name="signed_in_fmt">logueado</string>
+    <string name="sign_in_button">sign_in</string>
+    <string name="email_sign_in_button">sign_in</string>
+    <string name="user_register">Registro de cuenta</string>
+    <string name="lbl_client_profile">Cliente</string>
+    <string name="lbl_saler_profile">Vendedor</string>
+    <string name="lbl_query_list">Listado de ofertas</string>
+    <string name="lbl_query_map">Ver en mapa</string>
+    <string name="lblTel">Teléfono</string>
+    <string name="btnGuardar">Guardar</string>
+    <string name="lblOpen">Horario de apertura</string>
+    <string name="lblClose">Horario de cierre</string>
+    <string name="lbl_name">Nombre</string>
+    <string name="lbl_lastName">Apellido</string>
+    <string name="lbl_category">Categoría</string>
+    <string name="lbl_description">Descripción</string>
+    <string name="btn_modifyCategory">Categorías</string>
+    <string name="tag_notification">tag</string>
+    <string name="lblShopAddress">Dirección</string>
+    <string name="waitingRating">Calificando... por favor espere</string>
+
+
+    <string name="need_input_category_name">Debe ingresar una categoría para realizar la búsqueda</string>
+    <string name="location_error">Error al obtener su geolocalización</string>
+
+    <string name="btnGeolocation">Obtener posición actual</string>
+    <string name="do_query_message">Realizando consulta. Espere por favor</string>
+    <string name="cancel_query_message">Cancelando consulta. Espere por favor</string>
+    <string name="getting_categories">Obteniendo categorías. Espere por favor</string>
+    <string name="getting_history">Procesando. Espere por favor</string>
+    <string name="getting_mesage_saler">Obteniendo el mensaje del vendedor. Espere por favor</string>
+    <string name="confirm_mesage_saler">Confirmando compra. Espere por favor</string>
+    <string name="authenticate">Autenticando. Espere por favor</string>
+    <string name="creating_account">Creando su cuenta. Espere por favor</string>
+    <string name="updating_categories">Actualizando categorías. Espere por favor</string>
+    <string name="update_account_success">Los datos de su cuenta han sido actualizados correctamente</string>
+    <string name="updating_account">Actualizando datos de su cuenta. Espere por favor</string>
+    <string name="getting_user">Obteniendo datos de usuario. Espere por favor</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <string name="choose_categories">Modificar Categorias</string>
+    <string name="btnCategoryOk">Ok</string>
+    <string name="btnCategoryTitle">Categorias:</string>
+    <string name="btnCategoryDismiss">Atrás</string>
+    <string name="btnCategoryClearAll">Borrar todas</string>
+    <string name="btnCategorySelectAll">Seleccionar todas</string>
+    <string name="lblMessageSaler"> Mensaje </string>
+    <string name="lblPrice"> Precio $  </string>
+    <string name="btnPhoto"> Adjuntar Foto  </string>
+    <string name="btnSend"> Enviar  </string>
+    <string name="btnTakeAPhoto"> Tomar Foto  </string>
+    <string name="btnCall"> Llamar  </string>
+    <string name="btnConfirm"> Comprar  </string>
+    <string name="btnCancel"> Cancelar Compra  </string>
+
+    <string name="error_getting_current_query">Ocurrió un error al obtener la consulta</string>
+    <string name="getting_current_query">Obteniendo consulta. Espere por favor</string>
+    <string name="tender_was_sended">Su oferta fue enviada al cliente.</string>
+    <string name="sending_tender">Enviando su oferta. Espere por favor</string>
+    <string name="image_permission">Se necesitan aceptar los permisos para poder enviar imágenes</string>
+    <string name="permissions_was_acepted">Permisos aceptados</string>
+    <string name="permissions_was_deny">Permisos denegados</string>
+    <string name="camera_message">Para usar las funciones de la app necesitas aceptar los permisos</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="take_photo">Tomar foto</string>
+    <string name="photo_by_fileSystem">Elegir de la galeria</string>
+    <string name="select_option">Elija una opción:</string>
+    <string name="select_an_image">Seleccione una imágen</string>
+    <string name="attached_picture">Foto adjuntada</string>
+    <string name="category_query">Categoría: </string>
+    <string name="description_query">Descripción: </string>
+    <string name="title_query_response">Resultado de busquedas</string>
+    <string name="pending_queries">pendingQueries</string>
+    <!-- system key's -->
+    <string name="change_device_operation">changeDeviceId</string>
+    <string name="sign_in_operation">signin</string>
+    <string name="title_activity_settings_saler">Settings</string>
+    <string name="category_resource">categories</string>
+    <string name="all_categories">all</string>
+    <string name="query_resource">queries</string>
+    <string name="do_query_operation">doIt</string>
+    <string name="view_tender_saler">tenderId</string>
+    <string name="confirm_tender_saler">confirm</string>
+    <string name="cancel_query_operation">cancel</string>
+    <string name="update_saler_account_operation">updateAccount</string>
+    <string name="tender_of_query">tenderOfQuery</string>
+    <string name="search_and_find_authentication">syf</string>
+    <string name="google_authentication">google</string>
+    <string name="current_query_id">currentQueryId</string>
+    <string name="main_package">uy.com.searchandfind</string>
+    <string name="device_token">deviceId</string>
+    <string name="SHQueryPending">isQueryPending</string>
+    <string name="user_id">userId</string>
+    <string name="authentication_type">authType</string>
+    <string name="token">token</string>
+    <string name="temporal_profile">tempProfile</string>
+    <string name="current_profile">profile</string>
+    <string name="client_profile">clients</string>
+    <string name="saler_profile">salers</string>
+    <string name="current_user">currentUser</string>
+    <string name="query_by_id">queryId</string>
+    <string name="tender_resource">tenders</string>
+    <string name="query_tag">query</string>
+    <string name="tender_from_saler_tag">tenderFromSaler</string>
+    <string name="idObject">tokenId</string>
+    <string name="saler_latitude">salerLatitude</string>
+    <string name="saler_length">salerLength</string>
+    <string name="shop_name">shopName</string>
+    <string name="shop_phone">shopPhone</string>
+    <string name="tender_amount">tenderAmount</string>
+    <string name="tender_description">tenderDescription</string>
+
+
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_title_social_recommendations">Enable social recommendations</string>
+    <string name="pref_description_social_recommendations">Recommendations for people to contact
+        based on your message history
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <!-- Example settings for Data & Sync -->
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string-array name="list_preference_entries">
+        <item>Entry 1</item>
+        <item>Entry 2</item>
+        <item>Entry 3</item>
+    </string-array>
+
+    <string-array name="list_preference_entry_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="multi_select_list_preference_default_value" />
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="categories_from_saler">avaibleCategories</string>
+    <string name="update_categories_from_saler">salerCategory</string>
+    <string name="title_activity_tender_saler">TenderSalerActivity</string>
+    <string name="title_activity_photo">PhotoActivity</string>
+    <string name="tender_saler_action">doIt</string>
+    <string name="title_activity_tender_client">TenderClientActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="query_response_title">Ofertas</string>
+    <string name="confirmTenderBody">Han confirmado tu oferta!</string>
+    <string name="refiewFromSalerBody">Un vendedor ha realizado una valoración sobre tí!</string>
+    <string name="reviewFromClientBody">Un cliente ha realizado una valoración de tí!</string>
+    <string name="confirmTenderTitle">Confirmación de oferta</string>
+    <string name="reviewFromSalerTitle">Valoración de cliente</string>
+
+
+</resources>

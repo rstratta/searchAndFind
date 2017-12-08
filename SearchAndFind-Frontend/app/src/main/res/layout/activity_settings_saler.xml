@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:background="#FFFFFF">
+
+            <!-- localName Label-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/local_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lblLocal"
+                    android:paddingTop="20dp"
+                    android:inputType="text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Telephone Label-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/telephone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lblTel"
+                    android:inputType="phone" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                android:gravity="center"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Dias de apertura" />
+
+                <TableRow android:gravity="center">
+
+                    <CheckBox
+                        android:id="@+id/monday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/tuesday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/wednesday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/thursday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/friday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/saturday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:text="" />
+
+                    <CheckBox
+                        android:id="@+id/sunday"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent" />
+                </TableRow>
+
+                <TableRow android:gravity="center">
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="L" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="M" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="Mi" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="J" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="V" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="S" />
+
+                    <TextView
+                        android:gravity="center"
+                        android:hint="D" />
+                </TableRow>
+            </TableLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingRight="24dp"
+                android:weightSum="1">
+
+                <EditText
+                    android:id="@+id/shop_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.08"
+                    android:hint="@string/lblShopAddress"
+                    android:inputType="text" />
+                <!-- open Label-->
+                <ImageButton
+                    android:id="@+id/locationButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:layout_gravity="right"
+                    android:layout_marginBottom="24dp"
+                    android:layout_weight="0.9"
+                    android:background="#FFFFFF"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/location" />
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp">
+
+                <EditText
+                    android:id="@+id/open"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lblOpen"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- close Label-->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/lblClose"
+                    android:inputType="number" />
+
+                <!-- Save bottom-->
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:layout_marginTop="24dp"
+                    android:padding="12dp"
+                    android:background="#00ABF5"
+                    android:textColor="#FFFFFF"
+                    android:text="@string/btnGuardar" />
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

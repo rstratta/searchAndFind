@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:padding="6dip" >
+        <TextView
+            android:id="@+id/tender_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="Description"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:textSize="22sp" />
+        <TextView
+            android:id="@+id/tender_amount"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textSize="20sp"
+            android:layout_below="@+id/tender_rating"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <ImageView
+            android:id="@+id/star"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_alignWithParentIfMissing="true"
+            android:src="@drawable/star"
+            android:layout_alignTop="@+id/tender_rating"
+            android:layout_alignLeft="@+id/tender_rating"/>
+        <TextView
+            android:id="@+id/tender_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:textSize="16sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+      
+
+    </RelativeLayout>
+</LinearLayout>

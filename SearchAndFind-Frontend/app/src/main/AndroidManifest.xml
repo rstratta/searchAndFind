@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="uy.com.searchandfind">
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
+
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@drawable/syflogo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/syflogo"
+
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="HardcodedDebugMode">
+        android:name="android.support.multidex.MultiDexApplication">
+        <activity
+            android:name=".main.MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name=".service.cloud.message.SearchAndFindBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="com.google.android.gcm.demo.app" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".service.cloud.register.ServiceCloudRegister">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+      <!--  <service android:name=".service.cloud.message.MessageService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>-->
+
+        <activity android:name=".login.LoginActivity" />
+        <activity
+            android:name=".user.UserRegisterActivity"
+            android:label="Crear cuenta" />
+        <activity
+            android:name=".saler.activity.SalerActivity"
+            android:label="Esperando clientes" />
+        <activity
+            android:name=".saler.SettingsSalerActivity"
+            android:label="Preferencias" />
+        <activity
+            android:name=".client.activity.ClientActivity"
+            android:label="Realizar búsqueda" />
+
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCljhgZwuGrhdU5sCZN0J_977sf5VJRqrk" />
+
+        <activity
+            android:name=".client.activity.ClientHistoryActivity"
+            android:label="Mis Compras" />
+        <activity
+            android:name=".saler.activity.RatingActivity"/>
+        <activity
+            android:name=".tender.activity.TenderSalerActivity"
+            android:label="@string/title_query_response"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".query.activity.QueryResponseActivity"
+            android:label="Ofertas recibidas"
+        
+            android:theme="@style/QueryResultTheme"
+            />
+            <activity android:name=".tender.activity.TenderClientActivity"
+                android:label="Confirmar compra"/>
+    </application>
+
+</manifest>

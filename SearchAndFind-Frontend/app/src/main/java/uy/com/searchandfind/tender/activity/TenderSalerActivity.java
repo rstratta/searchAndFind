@@ -1,0 +1,406 @@
+package uy.com.searchandfind.tender.activity;
+
+import android.annotation.TargetApi;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
+import android.util.Base64;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import uk.co.senab.photoview.PhotoViewAttacher;
+import uy.com.searchandfind.CacheManager;
+import uy.com.searchandfind.FieldValidator;
+import uy.com.searchandfind.R;
+import uy.com.searchandfind.Response;
+import uy.com.searchandfind.activity.ActivityHandler;
+import uy.com.searchandfind.activity.SearchAndFindActivity;
+import uy.com.searchandfind.activity.ShowErrorMessageHandler;
+import uy.com.searchandfind.query.QueryDTO;
+import uy.com.searchandfind.query.QueryRequest;
+import uy.com.searchandfind.query.QueryResponse;
+import uy.com.searchandfind.query.QueryResponseBuilder;
+import uy.com.searchandfind.saler.activity.SalerActivity;
+import uy.com.searchandfind.service.backend.ServerBackendControllerUtil;
+import uy.com.searchandfind.service.backend.ServerBackendInvoker;
+import uy.com.searchandfind.service.backend.URLBuilder;
+import uy.com.searchandfind.tender.TenderRequest;
+import uy.com.searchandfind.tender.TenderResponse;
+import uy.com.searchandfind.tender.TenderResponseBuilder;
+import uy.com.searchandfind.user.UserHandler;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
+public class TenderSalerActivity extends SearchAndFindActivity {
+    @InjectView(R.id.btn_Camera) ImageButton _takePhotoButton;
+    @InjectView(R.id.btn_Send) Button _sendButton;
+    @InjectView(R.id.img_Photo) ImageView _image;
+    @InjectView(R.id.message_saler) EditText _message;
+    @InjectView(R.id.saler_price) EditText _price;
+    @InjectView(R.id.view_camera) RelativeLayout _viewCamera;
+    @InjectView(R.id.category_query) TextView _categoryQuery;
+    @InjectView(R.id.description_query) TextView _descriptionQuery;
+    private final int MY_PERMISSIONS = 100;
+    static final int PHOTO_CODE = 200;
+    private final int SELECT_PICTURE = 300;
+    private String imageBase64 = "";
+    private String fileUri;
+    private PhotoViewAttacher photoViewAttacher ;
+    private QueryDTO currentQuery;
+    private Bitmap bitmap;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tender_saler);
+        ButterKnife.inject(this);
+        _categoryQuery.setText("");
+        _descriptionQuery.setText("");
+        getCurrentQuery();
+        if(availblePermission()){
+            _takePhotoButton.setEnabled(true);
+        }else{
+            _takePhotoButton.setEnabled(false);
+        }
+        _sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateData())
+                    sendTender();
+            }
+        });
+        _takePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOptions();
+            }
+        });
+    }
+
+    private void getCurrentQuery() {
+        if(CacheManager.getInstance().existKey("currentQuery")){
+            currentQuery=(QueryDTO)CacheManager.getInstance().lookup("currentQuery");
+            _categoryQuery.setText(getString(R.string.category_query).concat(" ").concat(currentQuery.getCategoryName()));
+            _descriptionQuery.setText(getString(R.string.description_query).concat(" ").concat(currentQuery.getDescription()));
+        } else {
+            ShowErrorMessageHandler.showMessageError(this,getString(R.string.error_getting_current_query), Toast.LENGTH_LONG);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CacheManager.getInstance().unbind("currentQuery");
+    }
+
+    private boolean validateData() {
+        String amount=_price.getText().toString();
+        if(FieldValidator.isFieldEmpty(amount)){
+            ShowErrorMessageHandler.showMessageError(this,getString(R.string.amount_is_required), Toast.LENGTH_LONG);
+            _price.requestFocus();
+            return false;
+        }
+        try{
+            Double.valueOf(amount);
+        }catch(NumberFormatException e){
+            ShowErrorMessageHandler.showMessageError(this,getString(R.string.amount_is_a_number), Toast.LENGTH_LONG);
+            _price.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void sendTender() {
+        TenderRequest request=createRequest();
+        sendRequest(request);
+    }
+
+    private TenderRequest createRequest(){
+        String messageSaler = _message.getText().toString();
+        double price = Double.valueOf(_price.getText().toString());
+        fillImageBase64FromBitMap();
+        TenderRequest tenderRequest = new TenderRequest();
+        tenderRequest.setTenderDescription(messageSaler);
+        tenderRequest.setTenderAmount(price);
+        tenderRequest.setUserId(UserHandler.getCurrentUserId(getApplicationContext()));
+        tenderRequest.setQueryId(currentQuery.getId());
+        tenderRequest.setImages(getImages());
+        return tenderRequest;
+    }
+
+    private void fillImageBase64FromBitMap() {
+        ByteArrayOutputStream byteArrayOutputStream=null;
+        try {
+            byteArrayOutputStream = new ByteArrayOutputStream();
+            if (FieldValidator.isNotNull(bitmap)) {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                imageBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+            }
+        }catch(Exception e){
+            ShowErrorMessageHandler.showMessageError(this,getString(R.string.error_loading_image),Toast.LENGTH_LONG);
+        }finally{
+            if(byteArrayOutputStream!=null){
+                try {
+                    byteArrayOutputStream.close();
+                }catch(Exception e){}
+            }
+        }
+    }
+
+    public void sendRequest(TenderRequest tenderRequest) {
+        ServerBackendInvoker<TenderRequest,TenderResponse> serverInvoker =  new ServerBackendInvoker(new TenderResponseBuilder());
+        String url=URLBuilder.buildPostURL(getString(R.string.tender_resource),getString(R.string.tender_saler_action));
+        Object[] params= ServerBackendControllerUtil.buildQueryParams(serverInvoker,url,getApplicationContext(),"POST", tenderRequest);
+        invokeBackend(params, getString(R.string.sending_tender), TenderSalerActivity.this);
+    }
+
+
+    private boolean availblePermission(){
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+            return true;
+        if((checkSelfPermission(WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) &&
+                (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED))
+            return true;
+        if((shouldShowRequestPermissionRationale(WRITE_EXTERNAL_STORAGE)) || (shouldShowRequestPermissionRationale(CAMERA))){
+            Snackbar.make(_viewCamera, getString(R.string.image_permission),
+                    Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
+                @TargetApi(Build.VERSION_CODES.M) //allow to use requestpermission
+                @Override
+                public void onClick(View v) {
+                    requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+                }
+            });
+        }else{
+            requestPermissions(new String[]{WRITE_EXTERNAL_STORAGE, CAMERA}, MY_PERMISSIONS);
+            return true;
+        }
+        return true;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == MY_PERMISSIONS){
+            int countElementsInArrayPermissions = 2;
+            if(grantResults.length == countElementsInArrayPermissions && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(TenderSalerActivity.this, getString(R.string.permissions_was_acepted), Toast.LENGTH_SHORT).show();
+                _takePhotoButton.setEnabled(true);
+            }
+        }else{
+            showExplanation();
+        }
+    }
+    private void showExplanation() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(TenderSalerActivity.this);
+        builder.setTitle(getString(R.string.permissions_was_deny));
+        builder.setMessage(getString(R.string.camera_message));
+        builder.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+        builder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.show();
+    }
+    private void showOptions() {
+        final CharSequence[] optionsToObtainPhoto = { getString(R.string.take_photo), getString(R.string.photo_by_fileSystem), getString(R.string.cancel)};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(TenderSalerActivity.this);
+        builder.setTitle(getString(R.string.select_option));
+        builder.setItems(optionsToObtainPhoto, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                final int TAKE_PHOTO_OPTION = 0;
+                final int CHOOSE_GALERY_OPTION = 1;
+                switch(which){
+                    case TAKE_PHOTO_OPTION:
+                        openCamera();
+                        break;
+                    case CHOOSE_GALERY_OPTION:
+                        openGalery();
+                        break;
+                    default:
+                        dialogInterface.dismiss();
+                        break;
+                }
+            }
+        });
+        builder.show();
+    }
+    private void openGalery() {
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent.createChooser(intent, getString(R.string.select_an_image)), SELECT_PICTURE);
+    }
+    private void openCamera() {
+        try{
+            File file = new File(Environment.getExternalStorageDirectory(), getString(R.string.attached_picture));
+            if(!file.exists()){
+                file.mkdirs();
+            }
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            fileUri = Environment.getExternalStorageDirectory() + File.separator + "IMG_" + timeStamp + ".jpg";
+            File newFile = new File(fileUri);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(newFile));
+            startActivityForResult();
+            //intent.setData(Uri.parse(fileUri));
+            this.sendBroadcast(intent);
+
+            startActivityForResult(intent, PHOTO_CODE);
+        }catch(Exception e){
+            Log.e("Error", "_" + e.getMessage());
+        }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("file_path", fileUri);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        fileUri = savedInstanceState.getString("file_path");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        try{
+            if(resultCode == RESULT_OK){
+                switch(requestCode){
+                    case PHOTO_CODE:
+                        MediaScannerConnection.scanFile(this, new String[]{fileUri}, null, new MediaScannerConnection.OnScanCompletedListener() {
+                            @Override
+                            public void onScanCompleted(String s, Uri uri) {
+                            }
+                        });
+                        bitmap = BitmapFactory.decodeFile(fileUri);
+
+                        ByteArrayOutputStream byteArrayOutputStream=null;
+                        try {
+                            byteArrayOutputStream = new ByteArrayOutputStream();
+                            if (FieldValidator.isNotNull(bitmap)) {
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+                                byte[] byteArray = byteArrayOutputStream.toByteArray();
+                                bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+                            }
+                        }catch(Exception e) {
+                            ShowErrorMessageHandler.showMessageError(this, getString(R.string.error_loading_image), Toast.LENGTH_LONG);
+                        }
+                        _image.setImageBitmap(bitmap);
+                        break;
+                    case SELECT_PICTURE:
+                        Uri uri = data.getData();
+                        _image.setImageURI(uri);
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                        break;
+                }
+                if(_image != null) {
+                    ImageView imageViewLowQuality = _image;
+                    imageViewLowQuality.setDrawingCacheQuality(_viewCamera.DRAWING_CACHE_QUALITY_AUTO);
+                    photoViewAttacher = new PhotoViewAttacher(imageViewLowQuality);
+                }
+            }
+        } catch(Exception e){
+            Log.e("Error" , "_" +  e.getMessage());
+        }
+    }
+
+    private void processAuthenticationException(String message) {
+        ShowErrorMessageHandler.showMessageError(this,message, Toast.LENGTH_LONG);
+        processAuthenticationError(getApplicationContext());
+        finish();
+    }
+
+
+    @Override
+    protected void processConcreteResponse(Response response) {
+        if(response.isAuthenticationError()) {
+            processAuthenticationException(response.getMessage());
+        }else if(!response.isSuccess()) {
+            ShowErrorMessageHandler.showMessageError(this,response.getMessage(),Toast.LENGTH_LONG);
+        }else{
+            processSuccessResponse(response);
+        }
+    }
+
+    private void processSuccessResponse(Response response) {
+        if(response instanceof QueryResponse) {
+            processAsQueryResponse((QueryResponse) response);
+        }else {
+            processAsTenderResponse((TenderResponse)response);
+        }
+    }
+
+    private void processAsQueryResponse(QueryResponse response) {
+        currentQuery=response.getQueryDTO();
+        _categoryQuery.setText(getString(R.string.category_query).concat(currentQuery.getCategoryName()));
+        _descriptionQuery.setText(getString(R.string.description_query).concat(currentQuery.getDescription()));
+    }
+
+    private void processAsTenderResponse(TenderResponse response) {
+        ShowErrorMessageHandler.showMessageError(TenderSalerActivity.this,getString(R.string.tender_was_sended), Toast.LENGTH_LONG);
+        removeCurrentQuery();
+
+    }
+
+    private void removeCurrentQuery() {
+        List<QueryDTO> queries=(List<QueryDTO>)CacheManager.getInstance().lookup(getString(R.string.pending_queries));
+        queries.remove(currentQuery);
+        CacheManager.getInstance().bind(getString(R.string.pending_queries),queries);
+        CacheManager.getInstance().unbind("currentQuery");
+        finish();
+    }
+
+    public Collection<String> getImages() {
+        Collection<String> images = new ArrayList<String>();
+        images.add(imageBase64);
+        return images;
+    }
+
+}
